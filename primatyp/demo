@@ -1,0 +1,12 @@
+import liblim
+eng1, eng2 = liblim.LimStore.make_engine(), liblim.LimStore.make_engine()
+ses1, ses2 = liblim.LimStore.make_session(eng1), liblim.LimStore.make_session(eng2)
+ses1.session.add(liblim.Message.create_message('Foobar'))
+ses1.session.commit()
+ses1.session.commit()
+def list_msgs(ses):
+    return '\n'.join(m.text for m in liblim.Message.list_all(ses.session))
+
+list_msgs(ses1)
+list_msgs(ses2)
+ses1.sync(ses2)
